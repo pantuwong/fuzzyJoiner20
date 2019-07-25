@@ -6,23 +6,22 @@ import tensorflow as tf
 import random as random
 import json
 
-from keras import backend as K
+from tensorflow.keras import backend as K
 
-from keras.preprocessing.text import Tokenizer
-from keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
 
-from keras.layers import Dense, Input, Flatten, Dropout, Lambda, GRU, Activation
-from keras.layers.wrappers import Bidirectional
+from tensorflow.keras.layers import Dense, Input, Flatten, Dropout, Lambda, GRU, Activation, Bidirectional
 
-from keras.layers import Conv1D, MaxPooling1D, Embedding
+from tensorflow.keras.layers import Conv1D, MaxPooling1D, Embedding
 
-from keras.models import Model, model_from_json, Sequential
+from tensorflow.keras.models import Model, model_from_json, Sequential
 
 from embeddings import KazumaCharEmbedding
 
 from annoy import AnnoyIndex
 
-from keras.callbacks import ModelCheckpoint, EarlyStopping
+from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 
 from names_cleanser import NameDataCleanser, CompanyDataCleanser
 
@@ -486,6 +485,7 @@ def build_model(embedder):
                     )([positive_dist, negative_dist, exemplar_negative_dist])
 
         model = Model([input_anchor, input_positive, input_negative], stacked_dists, name='triple_siamese')
+        print('>>>>>>>>>>>>>>>>>>>>>>>>>>', LOSS_FUNCTION)
         model.compile(optimizer="rmsprop", loss=LOSS_FUNCTION, metrics=[accuracy])
     test_positive_model = Model([input_anchor, input_positive, input_negative], positive_dist)
     test_negative_model = Model([input_anchor, input_positive, input_negative], negative_dist)
@@ -538,10 +538,11 @@ elif args.loss_function == 'improved-tanh-loss':
 elif args.loss_function == 'angular-loss':
     USE_ANGULAR_LOSS = True
     LOSS_FUNCTION = angular_loss
+elif args.loss_function == 'adapted-loss':
+    LOSS_FUNCTION = triplet_loss
 print('Loss function: ' + args.loss_function)
 
 USE_PRECOMPUTED_SPLIT = args.use_precomputed_split
-
 
 if args.debug_sample_size:
     DEBUG=True

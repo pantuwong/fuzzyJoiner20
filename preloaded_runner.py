@@ -4,16 +4,16 @@ import numpy as np
 import tensorflow as tf
 import random as random
 import json
-from keras import backend as K
+from tensorflow.keras import backend as K
 
 #from keras.preprocessing.text import Tokenizer
-from keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.preprocessing.sequence import pad_sequences
 
-from keras.layers import Input, Lambda, GRU
+from tensorflow.keras.layers import Input, Lambda, GRU
 
-from keras.layers import Embedding
+from tensorflow.keras.layers import Embedding
 
-from keras.models import Model
+from tensorflow.keras.models import Model
 
 from embeddings import KazumaCharEmbedding
 
